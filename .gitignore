@@ -1,0 +1,16 @@
+# virtual environment
+.env
+venv/
+
+# Python cache
+__pycache__/
+
+#  IDE files
+.idea/
+.vscode/
+
+#SQLite database file
+**/db.sqlite3
+
+#Config Token, API-keys
+config.py
