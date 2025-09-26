@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import BigInteger, String, DateTime, func
+from sqlalchemy import BigInteger, String, DateTime, Date, func
 from datetime import datetime
 
 class Base(DeclarativeBase):
@@ -12,3 +12,6 @@ class User(Base):
     telegram_id: Mapped[int] = mapped_column(BigInteger, unique=True, index=True)
     language: Mapped[str] = mapped_column(String(3), default='ru')
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    gender: Mapped[str] = mapped_column(String(10), default="not_specified")
+    birth_date: Mapped[Date] = mapped_column(Date, default="not_specified")
+    
