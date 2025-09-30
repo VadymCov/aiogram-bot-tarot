@@ -10,9 +10,9 @@ def get_language_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text="ua Українська", callback_data="lang_ua"),
-                InlineKeyboardButton(text="us English", callback_data="lang_en"),
-                InlineKeyboardButton(text="ru Русский", callback_data="lang_ru"),
+                InlineKeyboardButton(text="🇺🇦 Українська", callback_data="lang_ua"),
+                InlineKeyboardButton(text="🇺🇸 English", callback_data="lang_en"),
+                InlineKeyboardButton(text=" Русский", callback_data="lang_ru"),
             ]
         ]
     )
@@ -32,56 +32,88 @@ def get_gender_keyboard(lang="en"):
                 ),
             ],
             [
-                InlineKeyboardButton(
-                    text=texts["buttons"][lang]["choose_later"], callback_data="qw" # ❗❗❗
-                ),
+                InlineKeyboardButton(text=texts["buttons"][lang]["choose_later"], callback_data="set_birth_data"),
             ],
         ]
     )
+
 
 def get_calendar_keyboard(lang="en"):
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(
-                    text=texts["buttons"][lang]["choose_birth_date"], callback_data="set_birth_date"
-                ),
-                InlineKeyboardButton(
-                    text=texts["buttons"][lang]["choose_later"], callback_data="qw" # ❗❗❗
-                )
+                InlineKeyboardButton(text=texts["buttons"][lang]["choose_birth_date"], callback_data="set_birth_date"),
+                InlineKeyboardButton(text=texts["buttons"][lang]["choose_later"], callback_data="main_menu"),
             ]
-        ]        
+        ]
     )
+
+
 def get_main_keyboard(lang="en"):
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(
-                    text=texts["buttons"][lang]["card_of_day"], callback_data="qw"
-                ),
-                InlineKeyboardButton(
-                    text=texts["buttons"][lang]["rune_spread"], callback_data="qw"
-                ),
+                InlineKeyboardButton(text=texts["buttons"][lang]["card_of_day"], callback_data="in_dev"),
+                InlineKeyboardButton(text=texts["buttons"][lang]["rune_spread"], callback_data="in_dev"),
             ],
             [
-                InlineKeyboardButton(
-                    text=texts["buttons"][lang]["moon_calendar"], callback_data="qw"
-                ),
-                InlineKeyboardButton(
-                    text=texts["buttons"][lang]["meditation"], callback_data="qw"
-                ),
+                InlineKeyboardButton(text=texts["buttons"][lang]["moon_calendar"], callback_data="in_dev"),
+                InlineKeyboardButton(text=texts["buttons"][lang]["meditation"], callback_data="in_dev"),
             ],
             [
-                InlineKeyboardButton(
-                    text=texts["buttons"][lang]["family_advice"], callback_data="qw"
-                ),
-                InlineKeyboardButton(
-                    text=texts["buttons"][lang]["guardian_angel"], callback_data="qw"
-                ),
+                InlineKeyboardButton(text=texts["buttons"][lang]["family_advice"], callback_data="in_dev"),
+                InlineKeyboardButton(text=texts["buttons"][lang]["guardian_angel"], callback_data="in_dev"),
             ],
             [
+                InlineKeyboardButton(text=texts["buttons"][lang]["settings"], callback_data="setting"),
+            ],
+        ]
+    )
+
+
+# ⚙️
+def get_settings_keyboard(lang="en"):
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text=texts["buttons"][lang]["change_language"], callback_data="change_lang"),
+            ],
+            [
+                InlineKeyboardButton(text=texts["buttons"][lang]["change_gender"], callback_data="change_gender"),
+            ],
+            [
+                InlineKeyboardButton(text=texts["buttons"][lang]["change_birth_date"], callback_data="set_birth_date"),
+            ],
+            [InlineKeyboardButton(text=texts["buttons"][lang]["back_to_menu"], callback_data="main_menu")],
+        ]
+    )
+
+
+# ⚙️
+def get_settings_language_keyboard():
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text="🇺🇦 Українська", callback_data="save_ua"),
+                InlineKeyboardButton(text="🇺🇸 English", callback_data="save_en"),
+                InlineKeyboardButton(text=" Русский", callback_data="save_ru"),
+            ]
+        ]
+    )
+
+
+# ⚙️
+def get_setting_gender_keyboard(lang="en"):
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
                 InlineKeyboardButton(
-                    text=texts["buttons"][lang]["settings"], callback_data="qw"
+                    text=texts["buttons"][lang]["gender_male"],
+                    callback_data="save_male",
+                ),
+                InlineKeyboardButton(
+                    text=texts["buttons"][lang]["gender_female"],
+                    callback_data="save_female",
                 ),
             ],
         ]
