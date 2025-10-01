@@ -12,7 +12,7 @@ def get_language_keyboard():
             [
                 InlineKeyboardButton(text="🇺🇦 Українська", callback_data="lang_ua"),
                 InlineKeyboardButton(text="🇺🇸 English", callback_data="lang_en"),
-                InlineKeyboardButton(text=" Русский", callback_data="lang_ru"),
+                InlineKeyboardButton(text="🌐 Русский", callback_data="lang_ru"),
             ]
         ]
     )
@@ -32,7 +32,7 @@ def get_gender_keyboard(lang="en"):
                 ),
             ],
             [
-                InlineKeyboardButton(text=texts["buttons"][lang]["choose_later"], callback_data="set_birth_data"),
+                InlineKeyboardButton(text=texts["buttons"][lang]["choose_later"], callback_data="set_birth_date"),
             ],
         ]
     )
@@ -96,7 +96,7 @@ def get_settings_language_keyboard():
             [
                 InlineKeyboardButton(text="🇺🇦 Українська", callback_data="save_ua"),
                 InlineKeyboardButton(text="🇺🇸 English", callback_data="save_en"),
-                InlineKeyboardButton(text=" Русский", callback_data="save_ru"),
+                InlineKeyboardButton(text="🌐 Русский", callback_data="save_ru"),
             ]
         ]
     )
