@@ -1,22 +1,40 @@
 {
   "menu": {
     "ua": {
-      "choose_language": "👋 Привіт, <b>{name}!</b>\nОберіть мову! / Choose your language!\n",
-      "language_changed": "✅ Мову встановлено!",
-      "main_menu_title": "Ласкаво просимо, <b>{name}!</b> 🎴\n🔮 Головне меню:",
-      "ask_gender": "👥 Оберіть вашу стать?"
+      "title": "⚙️ Налаштування",
+      "choose_language": "👋 Привіт, <b>{name}!</b>\nОберіть мову! / Choose your language!",
+      "language_changed": "✅ Мову встановлено.",
+      "main_menu_title": "Ласкаво просимо до ✨ Головне меню ✨",
+      "ask_gender": "👥 Оберіть вашу стать:",
+      "saved": "✅ Збережено",
+      "gender_postponed": "⏰ Відкладено",
+      "choose_birth_date": "📅 Оберіть дату народження:",
+      "errors": "⚠️ Некоректна дата народження!\nДату можна змінити в налаштуваннях ⚙️",
+      "in_development": "🚧 Функція в розробці"
     },
     "en": {
+      "title": "⚙️ Settings",
       "choose_language": "👋 Привіт, <b>{name}!</b>\nОберіть мову! / Choose your language!\n",
-      "language_changed": "✅ Language set!",
-      "main_menu_title": "Welcome, <b>{name}!</b> 🎴 \n🔮 Main Menu:",
-      "ask_gender": "👥 Select your gender?"
+      "language_changed": "✅ Language set.",
+      "main_menu_title": "Welcome to the ✨ Main Menu ✨",
+      "ask_gender": "👥 Select your gender:",
+      "saved": "✅ Saved",
+      "gender_postponed": "⏰ Postponed",
+      "choose_birth_date": "📅 Select birth date",
+      "errors": "⚠️ Invalid birth date!\nYou can change it in settings ⚙️",
+      "in_development": "🚧 Feature in development"
     },
     "ru": {
+      "title": "⚙️ Настройки",
       "choose_language": "👋 Привіт, <b>{name}!</b>\nОберіть мову! / Choose your language!\n",
-      "language_changed": "✅ Язык установлен!",
-      "main_menu_title": "Добро пожаловать, <b>{name}!</b> 🎴\n🔮 Главное меню:",
-      "ask_gender": "👥 Выберите ваш пол?"
+      "language_changed": "✅ Язык установлен.",
+      "main_menu_title": "Добро пожаловать в ✨ Главное меню ✨",
+      "ask_gender": "👥 Выберите ваш пол:",
+      "saved": "✅ Сохранено",
+      "gender_postponed": "⏰ Отложено",
+      "choose_birth_date": "📅 Выберите дату рождения",
+      "errors": "⚠️ Некорректная дата рождения!\nДату можно изменить в настройках ⚙️",
+      "in_development": "🚧 Функция в разработке"
     }
   }
 }
