@@ -18,3 +18,4 @@ class User(Base):
     )
     gender: Mapped[str] = mapped_column(String(10), nullable=True, default=None)
     birth_date: Mapped[Date] = mapped_column(Date, nullable=True, default=None)
+    last_card_date: Mapped[Date] = mapped_column(Date, nullable=True)
