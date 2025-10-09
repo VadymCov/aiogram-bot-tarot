@@ -108,11 +108,13 @@ async def birth_data_save_handler(
         else:
             await callback.message.edit_text(  # type: ignore
                 await callback.message.edit_text(  # type: ignore
-                    text=texts["menu"][lang]["title"], reply_markup=inline.get_settings_keyboard(lang), parse_mode="HTML"
+                    text=texts["menu"][lang]["title"], reply_markup=inline.get_settings_keyboard(lang),
+                    parse_mode="HTML"
                 )
             )
         await state.clear()
         await callback.answer(text=texts["menu"][lang]["saved"])
+    return None
 
 
 @router.callback_query(F.data == "main_menu")
