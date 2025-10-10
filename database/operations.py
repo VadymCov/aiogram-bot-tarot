@@ -32,4 +32,6 @@ async def update_user(telegram_id: int, **kwargs):
                     setattr(user, field, value)
             await session.commit()
             return user
-        return None
+        else:
+            return None
+
