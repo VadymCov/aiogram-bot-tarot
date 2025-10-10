@@ -1,12 +1,9 @@
 import asyncio
 import logging
-from aiogram import Bot, Dispatcher
+from aiogram import F, Bot, Dispatcher
 
+from setup import preload_card, setup_dispatcher
 
-from database.database import init_db, reset_db_once  # ❗❗❗ reset_db_once
-from bot.handlers.start import router as start_router
-from bot.handlers.callbacks import router as callback_router
-from bot.middlewares.user_middleware import UserMiddleware
 from config.settings import BOT_TOKEN
 
 logging.basicConfig(level=logging.INFO)
@@ -15,34 +12,22 @@ logger = logging.getLogger(__name__)
 
 async def main():
     try:
-        await init_db()
-        logging.info("✅ The database has been initialized")
-    except Exception as e:
-        logging.info("❌ Failed to initialize database")
-        raise Exception(f"{e}")
-
-    try:
         bot = Bot(token=BOT_TOKEN)  # type: ignore
         dp = Dispatcher()
-        dp.callback_query.middleware(UserMiddleware())
-
-
         logging.info("✅ Bot and dispatcher create")
     except Exception as e:
-        logging.info("❌ Failed to create bot")
-        raise Exception(f"{e}")
+        logging.exception("❌ Failed to create bot")
+        raise
 
-    try:
-        dp.include_router(start_router)
-        dp.include_router(callback_router)
-        logging.info("✅ All handlers registered")
-    except Exception as e:
-        logging.info(f"❌ Failed to register handlers: {e}")
-        return
+    await preload_card()
+    await setup_dispatcher(dp)
 
     logger.info("✅ The bot is starting")
     await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("The Bot has been stopped ⛔")
