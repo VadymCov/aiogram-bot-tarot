@@ -16,7 +16,7 @@ class CardService:
     _lang_desc_cache: dict[str, dict[str, Any]] = {}
     _cache_timestamps: dict[str, float] = {}
     _media_cache: dict[str, dict[str, str]] = {}
-    _lang_media_cache: dict[str, dict[str, str]] = {}
+    _lang_media_cache: dict[str, dict[str, dict[str, str]]] = {}
     CACHE_TTL = 3600
 
     @classmethod
@@ -57,7 +57,7 @@ class CardService:
         return cls._lang_desc_cache[lang][card_number]
 
     @classmethod
-    async def _load_language_media_ids(cls, deck_name, lang: str):
+    async def _load_language_media_ids(cls, deck_name: str, lang: str):
         file_path = f"data/media_ids/lang_media_ids/{deck_name}/{lang}.json"
         try:
             async with aiofiles.open(file_path, "r") as f:
@@ -67,3 +67,9 @@ class CardService:
         except FileNotFoundError:
             logger.exception(f"❌ File ID for deck {deck_name} and lang {lang} not found")
             raise
+
+    @classmethod
+    async def get_media_id_by_lang(cls, deck_name: str, card_number: str, lang: str):
+        if deck_name not in cls._lang_media_cache:
+            await cls._load_language_media_ids(deck_name, lang)
+        return cls._lang_media_cache[deck_name][lang][card_number]
