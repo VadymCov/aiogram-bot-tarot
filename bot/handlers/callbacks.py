@@ -2,13 +2,16 @@ from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram_calendar import DialogCalendarCallback, SimpleCalendarCallback, DialogCalendar
+from random import randint
+from datetime import date
 from services.user_service import UserService
+from services.card_service import CardService
+from database.operations import get_or_create_user
 
 from bot.keyboards import inline
 import json
 
-
-router = Router()
+router: Router = Router()
 
 with open("data/text_menu.json", "r", encoding="utf-8") as f:
     texts = json.load(f)
@@ -82,7 +85,7 @@ async def settings_birth_date_calendar_handler(callback: types.CallbackQuery, st
 
 @router.callback_query(DialogCalendarCallback.filter(), UserStates.waiting_for_birth_date)
 async def birth_data_save_handler(
-    callback: types.CallbackQuery, callback_data: SimpleCalendarCallback, state: FSMContext, lang: str
+        callback: types.CallbackQuery, callback_data: SimpleCalendarCallback, state: FSMContext, lang: str
 ):
     if callback.data is not None and "CANCEL" in callback.data:
         await state.clear()
@@ -140,22 +143,42 @@ async def save_settings_handler(callback: types.CallbackQuery, lang: str):
     if field in ["ua", "en", "ru"]:
         await UserService.update_user_field(callback.from_user.id, language=field)
         await callback.answer(text=texts["menu"][lang]["saved"])
-        await callback.message.edit_text(  # type: ignore
+        await callback.message.edit_text(
             text=texts["menu"][field]["main_menu_title"],
             reply_markup=inline.get_main_keyboard(field), parse_mode="HTML"
-            )
+        )
         return None
-        
+
     elif field in ["male", "female"]:
         await UserService.update_user_field(callback.from_user.id, gender=field)
     else:
         await UserService.update_user_field(callback.from_user.id, birth_date=field)
     await callback.answer(text=texts["menu"][lang]["saved"])
-    await callback.message.edit_text(  # type: ignore
+    await callback.message.edit_text(
         text=texts["menu"][lang]["main_menu_title"], reply_markup=inline.get_main_keyboard(lang), parse_mode="HTML"
     )
+    return None
 
 
 @router.callback_query(F.data == "in_dev")
 async def in_development_handler(callback: types.CallbackQuery, lang: str):
     await callback.answer(text=texts["menu"][lang]["in_development"])
+
+
+@router.callback_query(F.data == "family_advice")
+async def family_advice_handler(callback: types.CallbackQuery, lang: str):
+    num_card = str(randint(1, 60))
+    deck_name = "family_advice"
+    user = await get_or_create_user(callback.from_user.id)
+    edited_text = "\n".join(texts["menu"][lang]["card_one_day"])
+    if user.last_card_date == date.today():
+        await callback.message.edit_text(
+            text=edited_text, reply_markup=inline.get_main_keyboard(lang), parse_mode="HTML"
+        )
+        return None
+    else:
+        await UserService.update_user_field(callback.from_user_id, last_card_date=date.today())
+        image_id = await CardService.get_media_id_by_lang(deck_name, num_card, lang)
+        media = types.InputMediaPhoto(media=image_id)
+        await callback.message.edit_media(media=media, reply_markup=inline.get_return_tu_menu(lang))
+        return None
