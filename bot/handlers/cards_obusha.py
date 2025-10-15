@@ -34,10 +34,10 @@ async def obusha_deck_handler(callback: types.CallbackQuery, lang: str):
                 parse_mode="HTML"
             )
         except exceptions.TelegramBadRequest as e:
-            if "message is not modified" in str(e):  # ✅ ПРАВИЛЬНО
+            if "message is not modified" not in str(e):
                 logger.debug(f"🪚User {callback.from_user.id} pressed the button again")
-                return
-            raise
+                raise
+        return
 
     await UserService.update_user_field(callback.from_user.id, last_obusha_date=date.today())
     image_id = await CardService.get_media_id(deck_name, num_card)
