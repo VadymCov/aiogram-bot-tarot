@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from aiogram import F, Bot, Dispatcher
+from aiogram import Bot, Dispatcher
 
 from setup import preload_card, setup_dispatcher
 
@@ -16,11 +16,11 @@ logger = logging.getLogger(__name__)
 
 async def main():
     try:
-        bot = Bot(token=BOT_TOKEN)  # type: ignore
+        bot = Bot(token=BOT_TOKEN)
         dp = Dispatcher()
         logging.info("✅ Bot and dispatcher create")
     except Exception as e:
-        logging.exception("❌ Failed to create bot")
+        logging.exception(f"❌ Failed to create bot {e}")
         raise
 
     await preload_card()
