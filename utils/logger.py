@@ -1,7 +1,6 @@
-import logging
+import logging, inspect
 
-
-class AppLogging:
+class AppLogger:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         if not self.logger.handlers:
@@ -9,9 +8,14 @@ class AppLogging:
             formatter = logging.Formatter(
                 "%(asctime)s - %(levelname)s - %(module)s - %(message)s"
             )
-            handler.setFormater(formatter)
+            handler.setFormatter(formatter)
             self.logger.addHandler(handler)
             self.logger.setLevel(logging.INFO)
+    @staticmethod
+    def get_logger():
+        caller = inspect.stack()[1].frame.f_globals.get("__name__", "__main__")
+        return logging.getLogger(f"{caller}")
+
 
 class Singleton(type):
     instances = {}
@@ -22,4 +26,4 @@ class Singleton(type):
         return cls.instances[cls]
 
 
-class AppLogger(AppLogging, metaclass=Singleton): pass
+class AppLogging(AppLogger, metaclass=Singleton): pass
