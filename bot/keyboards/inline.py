@@ -53,20 +53,37 @@ def get_main_keyboard(lang="en"):
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text=texts["buttons"][lang]["card_of_day"], callback_data="in_dev"),
-                InlineKeyboardButton(text=texts["buttons"][lang]["rune_spread"], callback_data="in_dev"),
+                InlineKeyboardButton(text=texts["buttons"][lang]["card_of_day"], callback_data="vadaram_card"),
             ],
             [
-                InlineKeyboardButton(text=texts["buttons"][lang]["moon_calendar"], callback_data="in_dev"),
-                InlineKeyboardButton(text=texts["buttons"][lang]["meditation"], callback_data="in_dev"),
+                InlineKeyboardButton(text=texts["buttons"][lang]["family_advice"], callback_data="family_advice"),
             ],
             [
-                InlineKeyboardButton(text=texts["buttons"][lang]["family_advice"], callback_data="in_dev"),
-                InlineKeyboardButton(text=texts["buttons"][lang]["guardian_angel"], callback_data="in_dev"),
+                InlineKeyboardButton(text=texts["buttons"][lang]["obusha"], callback_data="obusha_card")
             ],
             [
                 InlineKeyboardButton(text=texts["buttons"][lang]["settings"], callback_data="setting"),
             ],
+        ]
+    )
+
+
+def get_return_to_edit_menu(lang="en"):
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text=texts["buttons"][lang]["back_to_menu"], callback_data="edit_menu")
+            ]
+        ]
+    )
+
+
+def get_return_to_menu(lang="en"):
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text=texts["buttons"][lang]["back_to_menu"], callback_data="main_menu")
+            ]
         ]
     )
 
@@ -84,7 +101,7 @@ def get_settings_keyboard(lang="en"):
             [
                 InlineKeyboardButton(text=texts["buttons"][lang]["change_birth_date"], callback_data="set_birth_date"),
             ],
-            [InlineKeyboardButton(text=texts["buttons"][lang]["back_to_menu"], callback_data="main_menu")],
+            [InlineKeyboardButton(text=texts["buttons"][lang]["back_to_menu"], callback_data="edit_menu")],
         ]
     )
 
