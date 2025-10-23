@@ -1,15 +1,8 @@
-from database.operations import get_or_create_user
-from datetime import datetime, date
-import time
+import time, aiofiles, asyncio, json
 from typing import Any
-import asyncio
-import aiofiles
-import random
-import json
+from utils.logger import AppLogging
 
-import logging
-
-logger = logging.getLogger(__name__)
+logger = AppLogging.get_logger()
 
 
 class CardService:
@@ -35,26 +28,29 @@ class CardService:
     async def get_media_id(cls, deck_name: str, card_number: str):
         if deck_name not in cls._media_cache:
             await cls._load_media_ids(deck_name)
-        return cls._media_cache[deck_name][card_number]
+        return cls._media_cache[deck_name].get(card_number, None)
 
     @classmethod
     async def _load_language_desc(cls, lang: str):
-        async with aiofiles.open(f"data/cards/{lang}.json", "r", encoding="utf-8") as f:
+        async with aiofiles.open(f"data/desc_cards/{lang}.json", "r", encoding="utf-8") as f:
             content = await f.read()
             cards_descriptions = await asyncio.to_thread(json.loads, content)
 
-        cls._lang_desc_cache[lang] = cards_descriptions["cards"]
+        cls._lang_desc_cache[lang] = cards_descriptions
         cls._cache_timestamps[lang] = time.time()
 
     @classmethod
-    async def get_card_descriptions(cls, card_number: str, lang: str):
+    async def get_card_descriptions(cls, card_number: str, deck_name: str, lang: str):
         if lang not in cls._lang_desc_cache:
             await cls._load_language_desc(lang)
 
         if time.time() - cls._cache_timestamps[lang] > cls.CACHE_TTL:
             await cls._load_language_desc(lang)
 
-        return cls._lang_desc_cache[lang][card_number]
+        if deck_name in cls._lang_desc_cache[lang]:
+            return cls._lang_desc_cache[lang][deck_name].get(card_number, None)
+
+        return None
 
     @classmethod
     async def _load_language_media_ids(cls, deck_name: str, lang: str):
@@ -71,5 +67,6 @@ class CardService:
     @classmethod
     async def get_media_id_by_lang(cls, deck_name: str, card_number: str, lang: str):
         if deck_name not in cls._lang_media_cache:
+            cls._lang_media_cache[deck_name] = {}
             await cls._load_language_media_ids(deck_name, lang)
-        return cls._lang_media_cache[deck_name][lang][card_number]
+        return cls._lang_media_cache[deck_name][lang].get(card_number, None)
