@@ -5,6 +5,7 @@ from aiogram_calendar import DialogCalendarCallback, DialogCalendar
 from bot.handlers.callbacks import UserStates
 from bot.keyboards import inline
 from services.user_service import UserService
+from utils.locale_helper import get_system_locale
 
 import json
 
@@ -19,22 +20,12 @@ router: Router = Router()
 @router.callback_query(F.data == "set_birth_date")
 async def birth_date_calendar_handler(callback: types.CallbackQuery, state: FSMContext, lang: str):
     await state.update_data(return_to="main_menu")
-    cancel_text = texts_button["buttons"][lang]["choose_later"]
-    calendar = DialogCalendar(locale=lang, cancel_btn=cancel_text)
+    cancel_text = texts_button["buttons"]["en"]["choose_later"]
+    system_locale = get_system_locale(lang)
+    calendar = DialogCalendar(locale=system_locale, cancel_btn=cancel_text)
     markup = await calendar.start_calendar(year=1990)
     await state.set_state(UserStates.waiting_for_birth_date)
-    await callback.message.edit_text(text=texts["menu"][lang]["choose_birth_date"], reply_markup=markup)  # type: ignore
-
-
-@router.callback_query(F.data == "set_birth_date")  # ⚙️
-async def settings_birth_date_calendar_handler(callback: types.CallbackQuery, state: FSMContext, lang: str):
-    await state.update_data(return_tu="settings")
-    cancel_text = texts_button["buttons"][lang]["choose_later"]
-    calendar = DialogCalendar(locale=lang, cancel_btn=cancel_text)
-    calendar = DialogCalendar(locale=lang)
-    markup = await calendar.start_calendar(year=1990)
-    await state.set_state(UserStates.waiting_for_birth_date)
-    await callback.message.edit_text(text=texts["menu"][lang]["choose_birth_date"], reply_markup=markup)  # type: ignore
+    await callback.message.edit_text(text=texts["menu"]["en"]["choose_birth_date"], reply_markup=markup)  # type: ignore
 
 
 @router.callback_query(DialogCalendarCallback.filter(), UserStates.waiting_for_birth_date)
@@ -49,8 +40,9 @@ async def birth_data_save_handler(
         return None
 
     cancel_text = texts_button["buttons"][lang]["choose_later"]
-    calendar = DialogCalendar(locale=lang, cancel_btn=cancel_text)
-    selected, date_selected = await calendar.process_selection(callback, callback_data)  # type: ignore
+    system_locale = get_system_locale(lang)
+    calendar = DialogCalendar(locale=system_locale, cancel_btn=cancel_text)
+    selected, date_selected = await calendar.process_selection(callback, callback_data)
 
     if selected:
         if date_selected.year < 1940 or date_selected.year > 2015:
@@ -62,13 +54,13 @@ async def birth_data_save_handler(
         return_to = state_data.get("return_to", "main_menu")
 
         if return_to == "main_menu":
-            await callback.message.edit_text(  # type: ignore
+            await callback.message.edit_text(
                 text=texts["menu"][lang]["main_menu_title"],
                 reply_markup=inline.get_main_keyboard(lang),
                 parse_mode="HTML"
             )
         else:
-            await callback.message.edit_text(  # type: ignore
+            await callback.message.edit_text(
                 text=texts["menu"][lang]["title"],
                 reply_markup=inline.get_settings_keyboard(lang),
                 parse_mode="HTML"
