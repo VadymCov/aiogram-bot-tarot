@@ -1,14 +1,9 @@
-import aiogram
 from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram_calendar import DialogCalendar
-from random import randint
-from datetime import date
 from services.user_service import UserService
-from services.card_service import CardService
-from database.operations import get_or_create_user
-
+from utils.locale_helper import get_system_locale
 from bot.keyboards import inline
 import json
 
@@ -50,11 +45,13 @@ async def gender_selection_handler(callback: types.CallbackQuery, state: FSMCont
     await callback.answer(text=texts["menu"][lang]["saved"])
 
     await state.update_data(return_to="main_menu")
-    calendar = DialogCalendar(locale=lang)
+    system_locale = get_system_locale(lang)
+    cancel_text = "⏩ choose_later"
+    calendar = DialogCalendar(locale=system_locale, cancel_btn=cancel_text)
     markup = await calendar.start_calendar(year=1990)
     await state.set_state(UserStates.waiting_for_birth_date)
     await callback.message.edit_text(
-        text=texts["menu"][lang]["choose_birth_date"],
+        text=texts["menu"]["en"]["choose_birth_date"],
         reply_markup=markup,
     )
 
@@ -70,9 +67,7 @@ async def settings_gender_handler(callback: types.CallbackQuery, lang: str):
 @router.callback_query(F.data == "main_menu")
 async def return_to_main_menu_handler(callback: types.CallbackQuery, lang: str):
     await callback.answer()
-
     await callback.message.edit_reply_markup(reply_markup=None)
-
     await callback.message.answer(
         text=texts["menu"][lang]["main_menu_title"],
         reply_markup=inline.get_main_keyboard(lang),
