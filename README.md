@@ -4,12 +4,12 @@ Telegram bot for daily tarot readings, family advice, and personal spiritual gui
 
 ## Features
 
-- 🎴 Daily card readings (Vadaram & Obusha decks)
-- 🌳 Ancestral wisdom & family advice
-- 📅 Birth date tracking for personalized readings
-- 🌐 Multi-language support (UA/EN/RU)
-- 🎂 Birthday greetings
-- ⚙️ User settings management
+-  Daily card readings (Vadaram & Obusha decks)
+-  Ancestral wisdom & family advice
+-  Birth date tracking for personalized readings
+-  Multi-language support (UA/EN/RU)
+-  Birthday greetings
+-  User settings management
 
 ## Screenshots
 
@@ -93,3 +93,4 @@ users (
 ## License
 
 MIT
+
