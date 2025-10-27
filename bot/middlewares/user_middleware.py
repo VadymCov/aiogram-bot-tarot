@@ -11,8 +11,8 @@ class UserMiddleware(BaseMiddleware):
         event: TelegramObject,
         data: Dict[str, Any],
     ) -> Any:
-        if hasattr(event, "from_user") and event.from_user: # type: ignore
-            user_id = event.from_user.id # type: ignore
+        if hasattr(event, "from_user") and event.from_user: 
+            user_id = event.from_user.id 
             user = await get_or_create_user(user_id)
             data["user"] = user
             data["lang"] = user.language
