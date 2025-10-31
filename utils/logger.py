@@ -1,4 +1,7 @@
 import logging, inspect
+from typing import TypeVar, Type, Any, cast, Dict
+
+T = TypeVar("T")
 
 class AppLogger:
     def __init__(self):
@@ -18,12 +21,14 @@ class AppLogger:
 
 
 class Singleton(type):
-    instances = {}
+    _instances: dict[type, Any] = {}
 
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls.instances:
-            cls.instances[cls] = super().__call__(cls, *args, **kwargs)
-        return cls.instances[cls]
+    def __call__(cls: Type[T], *args: Any, **kwargs: Any) -> T:
 
+        if cls not in Singleton._instances:
+            instance = super().__call__(*args, **kwargs)
+            Singleton._instances[cls] = instance
+
+        return Singleton._instances[cls]
 
 class AppLogging(AppLogger, metaclass=Singleton): pass
